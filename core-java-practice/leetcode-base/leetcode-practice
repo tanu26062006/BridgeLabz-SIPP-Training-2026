@@ -1,0 +1,61 @@
+//day2 problem1281
+class Solution {
+    public int subtractProductAndSum(int n) {
+        
+        int product = 1;
+        int sum = 0;
+
+        while (n > 0) {
+            int digit = n % 10;
+
+            product *= digit;
+            sum += digit;
+
+            n = n / 10;
+        }
+
+        return product - sum;
+    }
+}
+//problem1342
+class Solution {
+    public int numberOfSteps(int num) {
+
+        int steps = 0;
+
+        while (num > 0) {
+
+            if (num % 2 == 0) {
+                num = num / 2;
+            } else {
+                num = num - 1;
+            }
+
+            steps++;
+        }
+
+        return steps;
+    }
+}
+//problem2169
+
+class Solution {
+    public int countOperations(int num1, int num2) {
+        int countoperation = 0;
+        
+        while(num1!=0 && num2!=0){
+            if(num1>=num2){
+                num1=num1-num2;
+
+            }
+            else{
+                num2 =num2-num1;
+            }
+        countoperation++;
+            
+        }
+        return countoperation;
+
+        
+    }
+}
