@@ -1,0 +1,100 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+
+        Scanner input = new Scanner(System.in);
+
+        // 1. Basic Calculator
+        double number1 = input.nextDouble();
+        double number2 = input.nextDouble();
+
+        double addition = number1 + number2;
+        double subtraction = number1 - number2;
+        double multiplication = number1 * number2;
+        double division = number1 / number2;
+
+        System.out.println("The addition, subtraction, multiplication, and division value of 2 numbers "
+                + number1 + " and " + number2 + " is "
+                + addition + ", " + subtraction + ", "
+                + multiplication + ", and " + division);
+
+        // 2. Area of Triangle
+        double base = input.nextDouble();
+        double height = input.nextDouble();
+
+        double areaCm = 0.5 * base * height;
+        double areaInch = areaCm / (2.54 * 2.54);
+
+        System.out.println("The Area of the triangle in sq in is "
+                + areaInch + " and sq cm is " + areaCm);
+
+        // 3. Side of Square
+        double perimeter = input.nextDouble();
+
+        double side = perimeter / 4;
+
+        System.out.println("The length of the side is "
+                + side + " whose perimeter is " + perimeter);
+
+        // 4. Distance in Yards and Miles
+        double distanceInFeet = input.nextDouble();
+
+        double yards = distanceInFeet / 3;
+        double miles = yards / 1760;
+
+        System.out.println("The distance in yards is "
+                + yards + " while the distance in miles is " + miles);
+
+        // 5. Total Purchase Price
+        double unitPrice = input.nextDouble();
+        int quantity = input.nextInt();
+
+        double totalPrice = unitPrice * quantity;
+
+        System.out.println("The total purchase price is INR "
+                + totalPrice + " if the quantity "
+                + quantity + " and unit price is INR " + unitPrice);
+
+        // 6. Quotient and Reminder
+        int num1 = input.nextInt();
+        int num2 = input.nextInt();
+
+        int quotient = num1 / num2;
+        int reminder = num1 % num2;
+
+        System.out.println("The Quotient is " + quotient
+                + " and Reminder is " + reminder
+                + " of two number " + num1 + " and " + num2);
+
+        // 7. Int Operations
+        int a = input.nextInt();
+        int b = input.nextInt();
+        int c = input.nextInt();
+
+        int result1 = a + b * c;
+        int result2 = a * b + c;
+        int result3 = c + a / b;
+        int result4 = a % b + c;
+
+        System.out.println("The results of Int Operations are "
+                + result1 + ", " + result2 + ", "
+                + result3 + ", and " + result4);
+
+        // 8. Double Operations
+        double x = input.nextDouble();
+        double y = input.nextDouble();
+        double z = input.nextDouble();
+
+        double dResult1 = x + y * z;
+        double dResult2 = x * y + z;
+        double dResult3 = z + x / y;
+        double dResult4 = x % y + z;
+
+        System.out.println("The results of Double Operations are "
+                + dResult1 + ", " + dResult2 + ", "
+                + dResult3 + ", and " + dResult4);
+
+        input.close();
+    }
+}
