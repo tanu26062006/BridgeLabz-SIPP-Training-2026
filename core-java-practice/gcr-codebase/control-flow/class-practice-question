@@ -1,0 +1,102 @@
+public class Main {
+
+    static int findElement(int[] arr, int target) {
+
+        for(int i = 0; i < arr.length; i++) {
+
+            if(arr[i] == target) {
+                return i;   // return index
+            }
+        }
+
+        return -1; // element not found
+    }
+
+    public static void main(String[] args) {6
+
+        int[] arr = {10, 20, 30, 40, 50};
+
+        int target = 30;
+
+        int result = findElement(arr, target);
+
+        System.out.println(result);
+    }
+}
+//frequency count
+public class Main {
+
+    public static void main(String[] args) {
+
+        int[] arr = {1, 2, 3, 2, 4, 2};
+
+        int target = 2;
+        int count = 0;
+
+        for(int i = 0; i < arr.length; i++) {
+
+            if(arr[i] == target) {
+                count++;
+            }
+        }
+
+        System.out.println("Frequency = " + count);
+    }
+}
+//hashmap use to find duplicate
+
+import java.util.HashMap;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        int[] arr = {1, 2, 3, 2, 4, 1, 5, 2};
+
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        
+        for(int num : arr) {
+
+            if(map.containsKey(num)) {
+                map.put(num, map.get(num) + 1);
+            }
+            else {
+                map.put(num, 1);
+            }
+        }
+
+        
+        for(int key : map.keySet()) {
+
+            if(map.get(key) > 1) {
+                System.out.println(key + " -> " + map.get(key));
+            }
+        }
+    }
+}
+//story based sample problem-->A warehouse stores item quantities in an array. Find the max, min,
+total stock, and detect duplicates. Extend: rotate the stock array by
+k positions (simulate daily shift handover), and transpose a 2D shelf
+grid.
+//maximum subarray problem
+class Solution {
+    public int maxSubArray(int[] nums) {
+        int maxSum = Integer.MIN_VALUE;
+        int currentSum = 0;
+        
+        for (int i = 0; i < nums.length; i++) {
+            currentSum += nums[i];
+            
+            if (currentSum > maxSum) {
+                maxSum = currentSum;
+            }
+            
+            if (currentSum < 0) {
+                currentSum = 0;
+            }
+        }
+        
+        return maxSum;
+    }
+}
