@@ -59,3 +59,79 @@ class Solution {
         
     }
 }
+//move zeroes problem day3
+class Solution{
+ public void moveZeroes(int[]nums){
+  int lastNonZeroIndex=0;
+  for(int i=0;i<nums.length;i++){
+   if(nums[i]!=0){
+    nums[lastNonZeroIndex++]=nums[i];
+   }
+  }
+  for(int i=lastNonZeroIndex;i<nums.length;i++){
+   nums[i]=0;
+  }
+ }
+}
+//rotate array problem 
+import java.util.*;
+class Solution{
+public void rotate(int[]nums,int k){
+int n=nums.length;
+k%=n;
+reverse(nums,0,n-1);
+reverse(nums,0,k-1);
+reverse(nums,k,n-1);
+}
+private void reverse(int[]nums,int start,int end){
+while(start<end){
+int temp=nums[start];
+nums[start]=nums[end];
+nums[end]=temp;
+start++;
+end--;
+}
+}
+}
+//contains duplicate problem
+class Solution {
+    public boolean containsDuplicate(int[] arr) {
+        int count=0;
+        int n = arr.length-1;
+       Arrays.sort(arr);
+       for (int i=0; i<n; i++){
+        if (arr[i] == arr[i+1]){
+            count ++;
+        }
+       } 
+       return (count!=0);
+    }
+}
+//maximum consecutive ones problem
+class Solution {
+    public int findMaxConsecutiveOnes(int[] nums) {
+
+        int count = 0;
+        int max_count = 0;
+
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == 0) {
+                max_count = Math.max(max_count, count);
+                count = 0;
+            } else {
+                count++;
+            }
+        }
+
+        return max_count > count ? max_count : count;
+    }
+}
+//majority element problem
+class Solution {
+    public int majorityElement(int[] nums) {
+        Arrays.sort(nums);
+        int n = nums.length;
+        return nums[n/2];
+    }
+}
+
