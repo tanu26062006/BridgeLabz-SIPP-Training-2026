@@ -7,8 +7,8 @@ public class AllArrayPrograms {
 
         Scanner sc = new Scanner(System.in);
 
-        // 1. Voting Eligibility
-        System.out.println(" Program 1: Voting Eligibility");
+        
+        System.out.println("Voting Eligibility");
 
         int[] ages = new int[10];
 
@@ -27,8 +27,8 @@ public class AllArrayPrograms {
             }
         }
 
-        // 2. Positive Negative Zero
-        System.out.println("\nProgram 2: Positive Negative Zero ");
+        
+        System.out.println("\n Positive Negative Zero ");
 
         int[] numbers = new int[5];
 
@@ -60,8 +60,8 @@ public class AllArrayPrograms {
         else
             System.out.println("Last Element is Greater");
 
-        // 3. Multiplication Table 1 to 10
-        System.out.println("\n Program 3: Multiplication Table");
+        
+        System.out.println("\n Multiplication Table");
 
         System.out.print("Enter a number: ");
         int number = sc.nextInt();
@@ -76,8 +76,8 @@ public class AllArrayPrograms {
             System.out.println(number + " * " + i + " = " + table[i - 1]);
         }
 
-        // 4. Store Numbers Until 0 or Negative
-        System.out.println("\nProgram 4: Store Numbers and Sum ");
+        
+        System.out.println("\n Store Numbers and Sum ");
 
         double[] values = new double[10];
         int index = 0;
@@ -105,8 +105,8 @@ public class AllArrayPrograms {
 
         System.out.println("\nSum = " + total);
 
-        // 5. Multiplication Table 6 to 9
-        System.out.println("\n Program 5: Table From 6 To 9 ");
+        
+        System.out.println("\n  Table From 6 To 9 ");
 
         System.out.print("Enter a number: ");
         int num = sc.nextInt();
