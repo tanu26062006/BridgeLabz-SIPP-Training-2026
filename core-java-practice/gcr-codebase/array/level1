@@ -1,0 +1,284 @@
+import java.util.Scanner;
+import java.util.Arrays;
+
+public class AllArrayPrograms {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        // 1. Voting Eligibility
+        System.out.println(" Program 1: Voting Eligibility");
+
+        int[] ages = new int[10];
+
+        for (int i = 0; i < ages.length; i++) {
+            System.out.print("Enter age of student " + (i + 1) + ": ");
+            ages[i] = sc.nextInt();
+        }
+
+        for (int age : ages) {
+            if (age < 0) {
+                System.out.println("Invalid Age");
+            } else if (age >= 18) {
+                System.out.println("Student with age " + age + " can vote");
+            } else {
+                System.out.println("Student with age " + age + " cannot vote");
+            }
+        }
+
+        // 2. Positive Negative Zero
+        System.out.println("\nProgram 2: Positive Negative Zero ");
+
+        int[] numbers = new int[5];
+
+        for (int i = 0; i < numbers.length; i++) {
+            System.out.print("Enter number " + (i + 1) + ": ");
+            numbers[i] = sc.nextInt();
+        }
+
+        for (int num : numbers) {
+
+            if (num > 0) {
+
+                if (num % 2 == 0)
+                    System.out.println(num + " is Positive Even");
+                else
+                    System.out.println(num + " is Positive Odd");
+
+            } else if (num < 0) {
+                System.out.println(num + " is Negative");
+            } else {
+                System.out.println(num + " is Zero");
+            }
+        }
+
+        if (numbers[0] == numbers[4])
+            System.out.println("First and Last Element are Equal");
+        else if (numbers[0] > numbers[4])
+            System.out.println("First Element is Greater");
+        else
+            System.out.println("Last Element is Greater");
+
+        // 3. Multiplication Table 1 to 10
+        System.out.println("\n Program 3: Multiplication Table");
+
+        System.out.print("Enter a number: ");
+        int number = sc.nextInt();
+
+        int[] table = new int[10];
+
+        for (int i = 1; i <= 10; i++) {
+            table[i - 1] = number * i;
+        }
+
+        for (int i = 1; i <= 10; i++) {
+            System.out.println(number + " * " + i + " = " + table[i - 1]);
+        }
+
+        // 4. Store Numbers Until 0 or Negative
+        System.out.println("\nProgram 4: Store Numbers and Sum ");
+
+        double[] values = new double[10];
+        int index = 0;
+
+        while (true) {
+
+            System.out.print("Enter positive number: ");
+            double value = sc.nextDouble();
+
+            if (value <= 0 || index == 10)
+                break;
+
+            values[index] = value;
+            index++;
+        }
+
+        double total = 0;
+
+        System.out.println("Numbers Entered:");
+
+        for (int i = 0; i < index; i++) {
+            System.out.print(values[i] + " ");
+            total += values[i];
+        }
+
+        System.out.println("\nSum = " + total);
+
+        // 5. Multiplication Table 6 to 9
+        System.out.println("\n Program 5: Table From 6 To 9 ");
+
+        System.out.print("Enter a number: ");
+        int num = sc.nextInt();
+
+        int[] result = new int[4];
+
+        int pos = 0;
+
+        for (int i = 6; i <= 9; i++) {
+            result[pos++] = num * i;
+        }
+
+        pos = 0;
+
+        for (int i = 6; i <= 9; i++) {
+            System.out.println(num + " * " + i + " = " + result[pos++]);
+        }
+
+        
+        System.out.println("\n Program 6: Mean Height ");
+
+        double[] heights = new double[11];
+        double sumHeight = 0;
+
+        for (int i = 0; i < heights.length; i++) {
+            System.out.print("Enter height of player " + (i + 1) + ": ");
+            heights[i] = sc.nextDouble();
+            sumHeight += heights[i];
+        }
+
+        double mean = sumHeight / heights.length;
+
+        System.out.println("Mean Height = " + mean);
+
+        
+        System.out.println("\nProgram 7: Odd Even Arrays ");
+
+        System.out.print("Enter a natural number: ");
+        int n = sc.nextInt();
+
+        if (n > 0) {
+
+            int[] odd = new int[n / 2 + 1];
+            int[] even = new int[n / 2 + 1];
+
+            int oddIndex = 0;
+            int evenIndex = 0;
+
+            for (int i = 1; i <= n; i++) {
+
+                if (i % 2 == 0)
+                    even[evenIndex++] = i;
+                else
+                    odd[oddIndex++] = i;
+            }
+
+            System.out.print("Odd Numbers: ");
+
+            for (int i = 0; i < oddIndex; i++)
+                System.out.print(odd[i] + " ");
+
+            System.out.println();
+
+            System.out.print("Even Numbers: ");
+
+            for (int i = 0; i < evenIndex; i++)
+                System.out.print(even[i] + " ");
+
+            System.out.println();
+        } else {
+            System.out.println("Invalid Input");
+        }
+
+        
+        System.out.println("\n Program 8: Factors ");
+
+        System.out.print("Enter a number: ");
+        int factorNumber = sc.nextInt();
+
+        int maxFactor = 10;
+        int[] factors = new int[maxFactor];
+        int factorIndex = 0;
+
+        for (int i = 1; i <= factorNumber; i++) {
+
+            if (factorNumber % i == 0) {
+
+                if (factorIndex == maxFactor) {
+
+                    maxFactor *= 2;
+
+                    int[] temp = new int[maxFactor];
+
+                    for (int j = 0; j < factors.length; j++) {
+                        temp[j] = factors[j];
+                    }
+
+                    factors = temp;
+                }
+
+                factors[factorIndex++] = i;
+            }
+        }
+
+        System.out.print("Factors: ");
+
+        for (int i = 0; i < factorIndex; i++) {
+            System.out.print(factors[i] + " ");
+        }
+
+        System.out.println();
+
+        
+        System.out.println("\n Program 9: 2D Array To 1D Array ");
+
+        System.out.print("Enter rows: ");
+        int rows = sc.nextInt();
+
+        System.out.print("Enter columns: ");
+        int cols = sc.nextInt();
+
+        int[][] matrix = new int[rows][cols];
+
+        System.out.println("Enter Matrix Elements:");
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                matrix[i][j] = sc.nextInt();
+            }
+        }
+
+        int[] oneD = new int[rows * cols];
+        int idx = 0;
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                oneD[idx++] = matrix[i][j];
+            }
+        }
+
+        System.out.println("1D Array:");
+
+        for (int value : oneD) {
+            System.out.print(value + " ");
+        }
+
+        System.out.println();
+
+        
+        System.out.println("\n Program 10: FizzBuzz ");
+
+        System.out.print("Enter a positive number: ");
+        int limit = sc.nextInt();
+
+        String[] fizzBuzz = new String[limit + 1];
+
+        for (int i = 1; i <= limit; i++) {
+
+            if (i % 3 == 0 && i % 5 == 0)
+                fizzBuzz[i] = "FizzBuzz";
+            else if (i % 3 == 0)
+                fizzBuzz[i] = "Fizz";
+            else if (i % 5 == 0)
+                fizzBuzz[i] = "Buzz";
+            else
+                fizzBuzz[i] = String.valueOf(i);
+        }
+
+        for (int i = 1; i <= limit; i++) {
+            System.out.println("Position " + i + " = " + fizzBuzz[i]);
+        }
+
+        sc.close();
+    }
+}
