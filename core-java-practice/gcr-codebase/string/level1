@@ -1,0 +1,227 @@
+import java.util.Scanner;
+
+public class StringAndExceptionPrograms {
+
+    // 1. Compare Strings
+    static boolean compareStrings(String s1, String s2) {
+        if (s1.length() != s2.length())
+            return false;
+
+        for (int i = 0; i < s1.length(); i++) {
+            if (s1.charAt(i) != s2.charAt(i))
+                return false;
+        }
+        return true;
+    }
+
+    // 2. Substring using charAt()
+    static String getSubstring(String text, int start, int end) {
+        String result = "";
+        for (int i = start; i < end; i++) {
+            result += text.charAt(i);
+        }
+        return result;
+    }
+
+    // 3. Convert String to Character Array
+    static char[] getCharacters(String text) {
+        char[] arr = new char[text.length()];
+
+        for (int i = 0; i < text.length(); i++) {
+            arr[i] = text.charAt(i);
+        }
+        return arr;
+    }
+
+    static boolean compareArrays(char[] a, char[] b) {
+        if (a.length != b.length)
+            return false;
+
+        for (int i = 0; i < a.length; i++) {
+            if (a[i] != b[i])
+                return false;
+        }
+        return true;
+    }
+
+    // 4. NullPointerException
+    static void handleNullPointer() {
+        String text = null;
+
+        try {
+            System.out.println(text.length());
+        } catch (NullPointerException e) {
+            System.out.println("NullPointerException Handled");
+        }
+    }
+
+    // 5. StringIndexOutOfBoundsException
+    static void handleStringIndex(String text) {
+        try {
+            System.out.println(text.charAt(text.length()));
+        } catch (StringIndexOutOfBoundsException e) {
+            System.out.println("StringIndexOutOfBoundsException Handled");
+        }
+    }
+
+    // 6. IllegalArgumentException
+    static void handleIllegalArgument(String text) {
+        try {
+            System.out.println(text.substring(5, 2));
+        } catch (IllegalArgumentException e) {
+            System.out.println("IllegalArgumentException Handled");
+        } catch (RuntimeException e) {
+            System.out.println("RuntimeException Handled");
+        }
+    }
+
+    // 7. NumberFormatException
+    static void handleNumberFormat(String text) {
+        try {
+            int num = Integer.parseInt(text);
+            System.out.println("Number = " + num);
+        } catch (NumberFormatException e) {
+            System.out.println("NumberFormatException Handled");
+        }
+    }
+
+    // 8. ArrayIndexOutOfBoundsException
+    static void handleArrayIndex(String[] names) {
+        try {
+            System.out.println(names[names.length]);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("ArrayIndexOutOfBoundsException Handled");
+        }
+    }
+
+    // 9. Convert to Uppercase
+    static String toUpper(String text) {
+        String result = "";
+
+        for (int i = 0; i < text.length(); i++) {
+            char ch = text.charAt(i);
+
+            if (ch >= 'a' && ch <= 'z') {
+                ch = (char) (ch - 32);
+            }
+
+            result += ch;
+        }
+        return result;
+    }
+
+    // 10. Convert to Lowercase
+    static String toLower(String text) {
+        String result = "";
+
+        for (int i = 0; i < text.length(); i++) {
+            char ch = text.charAt(i);
+
+            if (ch >= 'A' && ch <= 'Z') {
+                ch = (char) (ch + 32);
+            }
+
+            result += ch;
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        
+        System.out.println(" Program 1 ");
+        System.out.print("Enter first string: ");
+        String s1 = sc.next();
+
+        System.out.print("Enter second string: ");
+        String s2 = sc.next();
+
+        System.out.println("User Defined: " + compareStrings(s1, s2));
+        System.out.println("Built-in: " + s1.equals(s2));
+
+        
+        System.out.println("\n Program 2 ");
+        System.out.print("Enter text: ");
+        String text = sc.next();
+
+        System.out.print("Enter start index: ");
+        int start = sc.nextInt();
+
+        System.out.print("Enter end index: ");
+        int end = sc.nextInt();
+
+        String userSub = getSubstring(text, start, end);
+        String builtSub = text.substring(start, end);
+
+        System.out.println("User Substring: " + userSub);
+        System.out.println("Built-in Substring: " + builtSub);
+        System.out.println("Equal: " + compareStrings(userSub, builtSub));
+
+        
+        System.out.println("\n Program 3 ");
+        System.out.print("Enter String: ");
+        String str = sc.next();
+
+        char[] arr1 = getCharacters(str);
+        char[] arr2 = str.toCharArray();
+
+        System.out.println("Arrays Equal: " + compareArrays(arr1, arr2));
+
+        
+        System.out.println("\n Program 4 ");
+        handleNullPointer();
+
+        
+        System.out.println("\n Program 5 ");
+        handleStringIndex(str);
+
+        
+        System.out.println("\n Program 6 ");
+        handleIllegalArgument(str);
+
+        
+        System.out.println("\n Program 7 ");
+        System.out.print("Enter text for Integer.parseInt(): ");
+        String numText = sc.next();
+        handleNumberFormat(numText);
+
+        
+        System.out.println("\n Program 8 ");
+        String[] names = new String[3];
+
+        for (int i = 0; i < names.length; i++) {
+            System.out.print("Enter name " + (i + 1) + ": ");
+            names[i] = sc.next();
+        }
+
+        handleArrayIndex(names);
+
+        
+        sc.nextLine();
+
+        System.out.println("\n Program 9 ");
+        System.out.print("Enter text: ");
+        String upperText = sc.nextLine();
+
+        String userUpper = toUpper(upperText);
+        String builtUpper = upperText.toUpperCase();
+
+        System.out.println("User Uppercase: " + userUpper);
+        System.out.println("Built-in Uppercase: " + builtUpper);
+        System.out.println("Equal: " + compareStrings(userUpper, builtUpper));
+
+         
+        System.out.println("\nProgram 10 ");
+        System.out.print("Enter text: ");
+        String lowerText = sc.nextLine();
+
+        String userLower = toLower(lowerText);
+        String builtLower = lowerText.toLowerCase();
+
+        System.out.println("User Lowercase: " + userLower);
+        System.out.println("Built-in Lowercase: " + builtLower);
+        System.out.println("Equal: " + compareStrings(userLower, builtLower));
+    }
+}
