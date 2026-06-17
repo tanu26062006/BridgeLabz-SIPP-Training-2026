@@ -1,0 +1,131 @@
+//scenario 1
+ import java.util.Scanner;
+
+public class IncreasingReadings {
+
+    public static boolean isStrictlyIncreasing(int[] arr, int index) {
+
+        // Base case
+        if (index == arr.length - 1) {
+            return true;
+        }
+
+        // Check current and next element
+        if (arr[index] >= arr[index + 1]) {
+            return false;
+        }
+
+        // Recursive call
+        return isStrictlyIncreasing(arr, index + 1);
+    }
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter number of readings: ");
+        int n = sc.nextInt();
+
+        int[] readings = new int[n];
+
+        System.out.println("Enter readings:");
+        for (int i = 0; i < n; i++) {
+            readings[i] = sc.nextInt();
+        }
+
+        boolean result = isStrictlyIncreasing(readings, 0);
+
+        System.out.println(result);
+
+        sc.close();
+    }
+}
+//scenario 2:
+import java.util.Scanner;
+
+public class IncreasingReadings {
+
+    public static boolean isStrictlyIncreasing(int[] arr, int index) {
+
+        if (arr.length <= 1 || index == arr.length - 1) {
+            return true;
+        }
+
+        if (arr[index] >= arr[index + 1]) {
+            return false;
+        }
+
+        return isStrictlyIncreasing(arr, index + 1);
+    }
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+
+        int[] readings = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            readings[i] = sc.nextInt();
+        }
+
+        System.out.println(isStrictlyIncreasing(readings, 0));
+
+        sc.close();
+    }
+}
+//scenario 3:
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class EmployeeSkillAssignment {
+
+    public static void findTeams(int[] skills, int target, int index,
+                                 ArrayList<Integer> currentTeam) {
+
+        // If target becomes 0, print the team
+        if (target == 0) {
+            System.out.println(currentTeam);
+            return;
+        }
+
+        // If index is out of bounds or target becomes negative
+        if (index == skills.length || target < 0) {
+            return;
+        }
+
+        // Include current employee skill
+        currentTeam.add(skills[index]);
+        findTeams(skills, target - skills[index], index + 1, currentTeam);
+
+        // Backtrack
+        currentTeam.remove(currentTeam.size() - 1);
+
+        // Exclude current employee skill
+        findTeams(skills, target, index + 1, currentTeam);
+    }
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter number of employees: ");
+        int n = sc.nextInt();
+
+        int[] skills = new int[n];
+
+        System.out.println("Enter skill scores:");
+        for (int i = 0; i < n; i++) {
+            skills[i] = sc.nextInt();
+        }
+
+        System.out.print("Enter target skill score: ");
+        int target = sc.nextInt();
+
+        System.out.println("Possible Teams:");
+        findTeams(skills, target, 0, new ArrayList<>());
+
+        sc.close();
+    }
+}
