@@ -1,0 +1,59 @@
+
+interface Trackable {
+
+    void logActivity();
+
+    
+    default void resetData() {
+        System.out.println("Activity data has been reset.");
+    }
+}
+
+
+interface Reportable {
+
+    void generateReport();
+}
+
+
+interface Notifiable {
+
+    void sendAlert();
+}
+
+
+class FitnessDevice implements Trackable, Reportable, Notifiable {
+
+    @Override
+    public void logActivity() {
+        System.out.println("Activity Logged: 5000 Steps, 2 km Walk");
+    }
+
+    @Override
+    public void generateReport() {
+        System.out.println("Today's Report:");
+        System.out.println("Steps : 5000");
+        System.out.println("Calories Burned : 250");
+    }
+
+    @Override
+    public void sendAlert() {
+        System.out.println("Alert: Time to drink water!");
+    }
+}
+public class FitnessTracker {
+
+    public static void main(String[] args) {
+
+        FitnessDevice device = new FitnessDevice();
+
+        device.logActivity();
+
+        device.generateReport();
+
+        device.sendAlert();
+
+        
+        device.resetData();
+    }
+}
