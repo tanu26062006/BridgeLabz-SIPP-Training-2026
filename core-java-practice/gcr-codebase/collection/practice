@@ -1,0 +1,228 @@
+//address book app
+import java.util.*;
+
+class Contact implements Comparable<Contact> {
+    String name;
+    String phone;
+    String email;
+
+    Contact(String name, String phone, String email) {
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+    }
+
+    @Override
+    public int compareTo(Contact c) {
+        return this.name.compareToIgnoreCase(c.name);
+    }
+
+    @Override
+    public String toString() {
+        return "Name: " + name +
+                ", Phone: " + phone +
+                ", Email: " + email;
+    }
+}
+
+public class AddressBook {
+
+    static ArrayList<Contact> contacts = new ArrayList<>();
+    static HashMap<String, Contact> map = new HashMap<>();
+    static HashSet<String> phoneSet = new HashSet<>();
+
+    public static void addContact(String name, String phone, String email) {
+
+        if(phoneSet.contains(phone)){
+            System.out.println("Duplicate Phone Number!");
+            return;
+        }
+
+        Contact c = new Contact(name, phone, email);
+
+        contacts.add(c);
+        map.put(name, c);
+        phoneSet.add(phone);
+
+        System.out.println("Contact Added.");
+    }
+
+    public static void search(String name){
+
+        if(map.containsKey(name))
+            System.out.println(map.get(name));
+        else
+            System.out.println("Contact Not Found.");
+    }
+
+    public static void delete(String name){
+
+        Contact c = map.remove(name);
+
+        if(c!=null){
+            contacts.remove(c);
+            phoneSet.remove(c.phone);
+            System.out.println("Deleted Successfully.");
+        }
+        else
+            System.out.println("Contact Not Found.");
+    }
+
+    public static void display(){
+
+        Collections.sort(contacts);
+
+        System.out.println("\nAddress Book");
+
+        for(Contact c : contacts)
+            System.out.println(c);
+    }
+
+    public static void main(String[] args) {
+
+        addContact("Rahul","99999","rahul@gmail.com");
+        addContact("Aman","88888","aman@gmail.com");
+        addContact("Priya","77777","priya@gmail.com");
+
+        search("Aman");
+
+        delete("Rahul");
+
+        display();
+    }
+}
+// smart parking system
+import java.util.*;
+
+public class ParkingManager {
+
+    static ArrayList<String> vehicles = new ArrayList<>();
+
+    public static void enterVehicle(String number){
+
+        vehicles.add(number);
+        System.out.println(number + " Entered.");
+    }
+
+    public static void exitVehicle(String number){
+
+        if(vehicles.remove(number))
+            System.out.println(number + " Exited.");
+        else
+            System.out.println("Vehicle Not Found.");
+    }
+
+    public static void searchVehicle(String number){
+
+        if(vehicles.contains(number))
+            System.out.println(number + " is Parked.");
+        else
+            System.out.println("Vehicle Not Found.");
+    }
+
+    public static void display(){
+
+        System.out.println("\nParked Vehicles:");
+
+        for(String v : vehicles)
+            System.out.println(v);
+
+        System.out.println("Occupied Slots: " + vehicles.size());
+    }
+
+    public static void main(String[] args) {
+
+        enterVehicle("UP32AB1234");
+        enterVehicle("DL01XY5678");
+        enterVehicle("RJ14PQ9999");
+
+        searchVehicle("DL01XY5678");
+
+        exitVehicle("UP32AB1234");
+
+        display();
+    }
+}
+//event verification system
+import java.util.*;
+
+public class EventRegistration {
+
+    static HashSet<String> participants = new HashSet<>();
+
+    public static void register(String email){
+
+        if(participants.add(email))
+            System.out.println("Registration Successful.");
+        else
+            System.out.println("Duplicate Registration Not Allowed.");
+    }
+
+    public static void display(){
+
+        System.out.println("\nRegistered Participants:");
+
+        for(String email : participants)
+            System.out.println(email);
+
+        System.out.println("Total Participants: " + participants.size());
+    }
+
+    public static void main(String[] args) {
+
+        register("rahul@gmail.com");
+        register("aman@gmail.com");
+        register("rahul@gmail.com");
+        register("priya@gmail.com");
+
+        display();
+    }
+}
+//attendence tracker
+import java.util.*;
+
+public class AttendanceTracker {
+
+    static HashMap<String, ArrayList<String>> attendance = new HashMap<>();
+
+    public static void markAttendance(String subject, String student){
+
+        attendance.putIfAbsent(subject, new ArrayList<>());
+
+        ArrayList<String> list = attendance.get(subject);
+
+        if(list.contains(student))
+            System.out.println(student + " already marked in " + subject);
+        else{
+            list.add(student);
+            System.out.println(student + " marked present in " + subject);
+        }
+    }
+
+    public static void display(){
+
+        for(String subject : attendance.keySet()){
+
+            ArrayList<String> students = attendance.get(subject);
+
+            System.out.println("\nSubject: " + subject);
+
+            for(String s : students)
+                System.out.println(s);
+
+            System.out.println("Total Students: " + students.size());
+        }
+    }
+
+    public static void main(String[] args) {
+
+        markAttendance("Java","Rahul");
+        markAttendance("Java","Aman");
+        markAttendance("Java","Rahul");
+
+        markAttendance("Python","Priya");
+        markAttendance("Python","Aman");
+
+        display();
+    }
+}
