@@ -1,0 +1,378 @@
+//ware house system
+ import java.util.*;
+
+abstract class WarehouseItem {
+    String name;
+
+    WarehouseItem(String name) {
+        this.name = name;
+    }
+
+    abstract void display();
+}
+
+class Electronics extends WarehouseItem {
+    Electronics(String name) {
+        super(name);
+    }
+
+    void display() {
+        System.out.println("Electronics : " + name);
+    }
+}
+
+class Groceries extends WarehouseItem {
+    Groceries(String name) {
+        super(name);
+    }
+
+    void display() {
+        System.out.println("Groceries : " + name);
+    }
+}
+
+class Furniture extends WarehouseItem {
+    Furniture(String name) {
+        super(name);
+    }
+
+    void display() {
+        System.out.println("Furniture : " + name);
+    }
+}
+
+class Storage<T extends WarehouseItem> {
+
+    List<T> items = new ArrayList<>();
+
+    void addItem(T item) {
+        items.add(item);
+    }
+
+    void showItems() {
+        for(T item : items) {
+            item.display();
+        }
+    }
+
+    List<T> getItems() {
+        return items;
+    }
+}
+
+public class WarehouseSystem {
+
+    static void displayAll(List<? extends WarehouseItem> list) {
+        for(WarehouseItem item : list)
+            item.display();
+    }
+
+    public static void main(String[] args) {
+
+        Storage<Electronics> electronics = new Storage<>();
+        electronics.addItem(new Electronics("Laptop"));
+        electronics.addItem(new Electronics("Mobile"));
+
+        Storage<Furniture> furniture = new Storage<>();
+        furniture.addItem(new Furniture("Chair"));
+
+        System.out.println("Warehouse Items");
+        displayAll(electronics.getItems());
+        displayAll(furniture.getItems());
+    }
+}
+//dynamic online marketplace
+import java.util.*;
+
+interface Category {
+    String getCategoryName();
+}
+
+class BookCategory implements Category {
+    public String getCategoryName() {
+        return "Books";
+    }
+}
+
+class ClothingCategory implements Category {
+    public String getCategoryName() {
+        return "Clothing";
+    }
+}
+
+class GadgetCategory implements Category {
+    public String getCategoryName() {
+        return "Gadgets";
+    }
+}
+
+class Product<T extends Category> {
+
+    String productName;
+    double price;
+    T category;
+
+    Product(String productName,double price,T category){
+        this.productName=productName;
+        this.price=price;
+        this.category=category;
+    }
+
+    void display(){
+        System.out.println(productName+" | "+category.getCategoryName()+" | "+price);
+    }
+}
+
+public class Marketplace {
+
+    static <T extends Product<?>> void applyDiscount(T product,double percentage){
+
+        product.price-=product.price*percentage/100;
+    }
+
+    public static void main(String[] args){
+
+        Product<BookCategory> book=
+                new Product<>("Java Programming",500,new BookCategory());
+
+        Product<GadgetCategory> laptop=
+                new Product<>("Laptop",70000,new GadgetCategory());
+
+        applyDiscount(book,10);
+        applyDiscount(laptop,15);
+
+        book.display();
+        laptop.display();
+    }
+}
+//unversity management system
+import java.util.*;
+
+abstract class CourseType{
+
+    String courseName;
+
+    CourseType(String courseName){
+        this.courseName=courseName;
+    }
+
+    abstract void evaluation();
+}
+
+class ExamCourse extends CourseType{
+
+    ExamCourse(String name){
+        super(name);
+    }
+
+    void evaluation(){
+        System.out.println(courseName+" : Exam Based");
+    }
+}
+
+class AssignmentCourse extends CourseType{
+
+    AssignmentCourse(String name){
+        super(name);
+    }
+
+    void evaluation(){
+        System.out.println(courseName+" : Assignment Based");
+    }
+}
+
+class ResearchCourse extends CourseType{
+
+    ResearchCourse(String name){
+        super(name);
+    }
+
+    void evaluation(){
+        System.out.println(courseName+" : Research Based");
+    }
+}
+
+class Course<T extends CourseType>{
+
+    List<T> courses=new ArrayList<>();
+
+    void addCourse(T course){
+        courses.add(course);
+    }
+
+    List<T> getCourses(){
+        return courses;
+    }
+}
+
+public class UniversityManagement{
+
+    static void display(List<? extends CourseType> list){
+
+        for(CourseType c:list)
+            c.evaluation();
+    }
+
+    public static void main(String[] args){
+
+        Course<ExamCourse> exam=new Course<>();
+        exam.addCourse(new ExamCourse("Java"));
+
+        Course<ResearchCourse> research=new Course<>();
+        research.addCourse(new ResearchCourse("Artificial Intelligence"));
+
+        display(exam.getCourses());
+        display(research.getCourses());
+    }
+}
+//meal plan generator
+import java.util.*;
+
+interface MealPlan{
+    void details();
+}
+
+class VegetarianMeal implements MealPlan{
+
+    public void details(){
+        System.out.println("Vegetarian Meal Generated");
+    }
+}
+
+class VeganMeal implements MealPlan{
+
+    public void details(){
+        System.out.println("Vegan Meal Generated");
+    }
+}
+
+class KetoMeal implements MealPlan{
+
+    public void details(){
+        System.out.println("Keto Meal Generated");
+    }
+}
+
+class Meal<T extends MealPlan>{
+
+    T plan;
+
+    Meal(T plan){
+        this.plan=plan;
+    }
+
+    void showMeal(){
+        plan.details();
+    }
+}
+
+public class MealGenerator{
+
+    static <T extends MealPlan> void generateMeal(T meal){
+
+        System.out.println("Valid Meal");
+        meal.details();
+    }
+
+    public static void main(String[] args){
+
+        Meal<VegetarianMeal> veg=
+                new Meal<>(new VegetarianMeal());
+
+        Meal<KetoMeal> keto=
+                new Meal<>(new KetoMeal());
+
+        veg.showMeal();
+        keto.showMeal();
+
+        generateMeal(new VeganMeal());
+    }
+}
+//ai resume screening system
+import java.util.*;
+
+abstract class JobRole{
+
+    String candidate;
+
+    JobRole(String candidate){
+        this.candidate=candidate;
+    }
+
+    abstract void role();
+}
+
+class SoftwareEngineer extends JobRole{
+
+    SoftwareEngineer(String name){
+        super(name);
+    }
+
+    void role(){
+        System.out.println(candidate+" -> Software Engineer");
+    }
+}
+
+class DataScientist extends JobRole{
+
+    DataScientist(String name){
+        super(name);
+    }
+
+    void role(){
+        System.out.println(candidate+" -> Data Scientist");
+    }
+}
+
+class ProductManager extends JobRole{
+
+    ProductManager(String name){
+        super(name);
+    }
+
+    void role(){
+        System.out.println(candidate+" -> Product Manager");
+    }
+}
+
+class Resume<T extends JobRole>{
+
+    T applicant;
+
+    Resume(T applicant){
+        this.applicant=applicant;
+    }
+
+    void processResume(){
+        applicant.role();
+    }
+}
+
+public class ResumeScreening{
+
+    static void screening(List<? extends JobRole> list){
+
+        for(JobRole role:list)
+            role.role();
+    }
+
+    public static void main(String[] args){
+
+        Resume<SoftwareEngineer> s1=
+                new Resume<>(new SoftwareEngineer("Rahul"));
+
+        Resume<DataScientist> s2=
+                new Resume<>(new DataScientist("Aman"));
+
+        s1.processResume();
+        s2.processResume();
+
+        List<JobRole> pipeline=new ArrayList<>();
+
+        pipeline.add(new SoftwareEngineer("Rahul"));
+        pipeline.add(new DataScientist("Aman"));
+        pipeline.add(new ProductManager("Riya"));
+
+        screening(pipeline);
+    }
+}
