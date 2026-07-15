@@ -1,0 +1,180 @@
+//pair sumpublic int[] findPairSum(int[] arr, int target) {
+
+    int left = 0;
+    int right = arr.length - 1;
+
+    while (left < right) {
+
+        int sum = arr[left] + arr[right];
+
+        if (sum == target) {
+            return new int[]{arr[left], arr[right]};
+        }
+
+        else if (sum < target) {
+            left++;
+        }
+
+        else {
+            right--;
+        }
+    }
+
+    return new int[]{-1, -1};
+}
+//three sum
+public List<List<Integer>> findTriplets(int[] nums, int target) {
+
+    Arrays.sort(nums);
+
+    List<List<Integer>> ans = new ArrayList<>();
+
+    for (int i = 0; i < nums.length - 2; i++) {
+
+        if (i > 0 && nums[i] == nums[i - 1])
+            continue;
+
+        int left = i + 1;
+        int right = nums.length - 1;
+
+        while (left < right) {
+
+            int sum = nums[i] + nums[left] + nums[right];
+
+            if (sum == target) {
+
+                ans.add(Arrays.asList(nums[i], nums[left], nums[right]));
+
+                while (left < right && nums[left] == nums[left + 1])
+                    left++;
+
+                while (left < right && nums[right] == nums[right - 1])
+                    right--;
+
+                left++;
+                right--;
+            }
+
+            else if (sum < target)
+                left++;
+
+            else
+                right--;
+        }
+    }
+
+    return ans;
+}
+//fixed sliding window
+public int maxSubarrayOfSizeK(int[] arr, int k) {
+
+    int windowSum = 0;
+
+    int maxSum = Integer.MIN_VALUE;
+
+    int start = 0;
+
+    for (int end = 0; end < arr.length; end++) {
+
+        windowSum += arr[end];
+
+        if (end >= k - 1) {
+
+            maxSum = Math.max(maxSum, windowSum);
+
+            windowSum -= arr[start];
+
+            start++;
+        }
+    }
+
+    return maxSum;
+}
+//vairable sliding window(minimum window substring)
+public String minWindowSubstring(String s, String t) {
+
+    if (s.length() == 0 || t.length() == 0)
+        return "";
+
+    Map<Character, Integer> need = new HashMap<>();
+
+    for (char c : t.toCharArray())
+        need.put(c, need.getOrDefault(c, 0) + 1);
+
+    Map<Character, Integer> window = new HashMap<>();
+
+    int required = need.size();
+    int formed = 0;
+
+    int start = 0;
+
+    int minLength = Integer.MAX_VALUE;
+
+    int answerStart = 0;
+
+    for (int end = 0; end < s.length(); end++) {
+
+        char c = s.charAt(end);
+
+        window.put(c, window.getOrDefault(c, 0) + 1);
+
+        if (need.containsKey(c) &&
+            window.get(c).intValue() == need.get(c).intValue())
+            formed++;
+
+        while (formed == required) {
+
+            if (end - start + 1 < minLength) {
+
+                minLength = end - start + 1;
+
+                answerStart = start;
+            }
+
+            char left = s.charAt(start);
+
+            window.put(left, window.get(left) - 1);
+
+            if (need.containsKey(left) &&
+                window.get(left) < need.get(left))
+                formed--;
+
+            start++;
+        }
+    }
+
+    if (minLength == Integer.MAX_VALUE)
+        return "";
+
+    return s.substring(answerStart, answerStart + minLength);
+}
+//Variable Sliding Window (At Most N Distinct)
+public int longestSubarrayWithAtMostNDistinct(int[] nums, int n) {
+
+    Map<Integer, Integer> freq = new HashMap<>();
+
+    int start = 0;
+
+    int maxLen = 0;
+
+    for (int end = 0; end < nums.length; end++) {
+
+        freq.put(nums[end], freq.getOrDefault(nums[end], 0) + 1);
+
+        while (freq.size() > n) {
+
+            int left = nums[start];
+
+            freq.put(left, freq.get(left) - 1);
+
+            if (freq.get(left) == 0)
+                freq.remove(left);
+
+            start++;
+        }
+
+        maxLen = Math.max(maxLen, end - start + 1);
+    }
+
+    return maxLen;
+}
