@@ -1,0 +1,194 @@
+public class LinkedListScenarios {
+
+    // Node Class
+    static class Node {
+        int data;
+        Node next;
+
+        Node(int data) {
+            this.data = data;
+        }
+    }
+
+    
+    // Scenario 1: Insert After
+    
+    public static void insertAfter(Node current, int value) {
+        if (current == null) return;
+
+        Node newNode = new Node(value);
+        newNode.next = current.next;
+        current.next = newNode;
+    }
+
+    
+    // Scenario 2: Delete Node
+    
+    public static Node deleteNode(Node head, int value) {
+
+        if (head == null)
+            return null;
+
+        if (head.data == value)
+            return head.next;
+
+        Node prev = head;
+        Node curr = head.next;
+
+        while (curr != null && curr.data != value) {
+            prev = curr;
+            curr = curr.next;
+        }
+
+        if (curr != null)
+            prev.next = curr.next;
+
+        return head;
+    }
+
+    
+    // Scenario 3: Reverse List
+    
+    public static Node reverse(Node head) {
+
+        Node prev = null;
+        Node curr = head;
+
+        while (curr != null) {
+            Node next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+
+        return prev;
+    }
+
+    
+    // Scenario 4: Find Middle
+    
+    public static Node findMiddle(Node head) {
+
+        Node slow = head;
+        Node fast = head;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        return slow;
+    }
+
+    
+    // Scenario 5: Detect Cycle
+    
+    public static boolean hasCycle(Node head) {
+
+        Node slow = head;
+        Node fast = head;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+
+            if (slow == fast)
+                return true;
+        }
+
+        return false;
+    }
+
+    
+    // Scenario 6: Merge Two Sorted Lists
+    
+    public static Node merge(Node a, Node b) {
+
+        Node dummy = new Node(-1);
+        Node tail = dummy;
+
+        while (a != null && b != null) {
+
+            if (a.data <= b.data) {
+                tail.next = a;
+                a = a.next;
+            } else {
+                tail.next = b;
+                b = b.next;
+            }
+
+            tail = tail.next;
+        }
+
+        if (a != null)
+            tail.next = a;
+        else
+            tail.next = b;
+
+        return dummy.next;
+    }
+
+    
+    // Print Linked List
+    
+    public static void printList(Node head) {
+
+        while (head != null) {
+            System.out.print(head.data + " -> ");
+            head = head.next;
+        }
+
+        System.out.println("NULL");
+    }
+
+    
+    // Main Method
+    
+    public static void main(String[] args) {
+
+        // Create List: 10 -> 20 -> 30 -> 40
+        Node head = new Node(10);
+        head.next = new Node(20);
+        head.next.next = new Node(30);
+        head.next.next.next = new Node(40);
+
+        System.out.println("Original List:");
+        printList(head);
+
+        // Scenario 1
+        insertAfter(head.next, 25);
+        System.out.println("\nAfter Insert 25 after 20:");
+        printList(head);
+
+        // Scenario 2
+        head = deleteNode(head, 30);
+        System.out.println("\nAfter Delete 30:");
+        printList(head);
+
+        // Scenario 3
+        head = reverse(head);
+        System.out.println("\nAfter Reverse:");
+        printList(head);
+
+        // Scenario 4
+        Node middle = findMiddle(head);
+        System.out.println("\nMiddle Node: " + middle.data);
+
+        // Scenario 5
+        System.out.println("\nCycle Present: " + hasCycle(head));
+
+        // Scenario 6
+        Node list1 = new Node(1);
+        list1.next = new Node(3);
+        list1.next.next = new Node(5);
+
+        Node list2 = new Node(2);
+        list2.next = new Node(4);
+        list2.next.next = new Node(6);
+
+        Node merged = merge(list1, list2);
+
+        System.out.println("\nMerged Sorted List:");
+        printList(merged);
+    }
+}
