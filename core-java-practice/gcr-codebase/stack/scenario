@@ -1,0 +1,248 @@
+import java.util.*;
+
+public class StackScenarios {
+
+    
+    // Scenario 1 : Array Based Stack (Undo Buffer)
+    
+    static class UndoBuffer {
+
+        private String[] data;
+        private int top;
+
+        UndoBuffer(int capacity) {
+            data = new String[capacity];
+            top = -1;
+        }
+
+        public boolean push(String edit) {
+
+            if (top == data.length - 1) {
+                System.out.println("Stack Overflow");
+                return false;
+            }
+
+            data[++top] = edit;
+            return true;
+        }
+
+        public String pop() {
+
+            if (isEmpty())
+                throw new RuntimeException("Stack Underflow");
+
+            return data[top--];
+        }
+
+        public String peek() {
+
+            if (isEmpty())
+                throw new RuntimeException("Stack Empty");
+
+            return data[top];
+        }
+
+        public boolean isEmpty() {
+            return top == -1;
+        }
+    }
+
+    
+    // Scenario 2 : Linked List Stack
+    
+    static class CallStack {
+
+        static class Node {
+            String functionName;
+            Node next;
+
+            Node(String functionName) {
+                this.functionName = functionName;
+            }
+        }
+
+        private Node top;
+
+        public void push(String functionName) {
+
+            Node newNode = new Node(functionName);
+
+            newNode.next = top;
+
+            top = newNode;
+        }
+
+        public String pop() {
+
+            if (isEmpty())
+                throw new RuntimeException("Stack Empty");
+
+            String value = top.functionName;
+
+            top = top.next;
+
+            return value;
+        }
+
+        public String peek() {
+
+            if (isEmpty())
+                throw new RuntimeException("Stack Empty");
+
+            return top.functionName;
+        }
+
+        public boolean isEmpty() {
+            return top == null;
+        }
+    }
+
+    
+    // Scenario 3 : Balanced Brackets
+    
+    public static boolean isValidConfig(String s) {
+
+        Stack<Character> stack = new Stack<>();
+
+        for (char ch : s.toCharArray()) {
+
+            if (ch == '(' || ch == '[' || ch == '{') {
+
+                stack.push(ch);
+
+            } else {
+
+                if (stack.isEmpty())
+                    return false;
+
+                char top = stack.pop();
+
+                if ((ch == ')' && top != '(') ||
+                        (ch == ']' && top != '[') ||
+                        (ch == '}' && top != '{'))
+                    return false;
+            }
+        }
+
+        return stack.isEmpty();
+    }
+
+    
+    // Scenario 4 : Next Greater Element
+    
+    public static int[] nextGreaterElement(int[] arr) {
+
+        int n = arr.length;
+
+        int[] ans = new int[n];
+
+        Arrays.fill(ans, -1);
+
+        Stack<Integer> stack = new Stack<>();
+
+        for (int i = 0; i < n; i++) {
+
+            while (!stack.isEmpty() && arr[i] > arr[stack.peek()]) {
+
+                ans[stack.pop()] = arr[i];
+            }
+
+            stack.push(i);
+        }
+
+        return ans;
+    }
+
+    
+    // Scenario 5 : Stock Span
+    
+    public static int[] stockSpan(int[] price) {
+
+        int n = price.length;
+
+        int[] span = new int[n];
+
+        Stack<Integer> stack = new Stack<>();
+
+        for (int i = 0; i < n; i++) {
+
+            while (!stack.isEmpty() && price[stack.peek()] <= price[i]) {
+
+                stack.pop();
+            }
+
+            if (stack.isEmpty())
+                span[i] = i + 1;
+            else
+                span[i] = i - stack.peek();
+
+            stack.push(i);
+        }
+
+        return span;
+    }
+
+    
+    // Print Array
+    
+    public static void printArray(int[] arr) {
+
+        for (int x : arr)
+            System.out.print(x + " ");
+
+        System.out.println();
+    }
+
+    
+    // Main Method
+
+    public static void main(String[] args) {
+
+        // Scenario 1
+        System.out.println("===== Array Stack =====");
+
+        UndoBuffer undo = new UndoBuffer(5);
+
+        undo.push("Edit1");
+        undo.push("Edit2");
+        undo.push("Edit3");
+
+        System.out.println("Peek : " + undo.peek());
+        System.out.println("Pop : " + undo.pop());
+        System.out.println("Peek : " + undo.peek());
+
+        // Scenario 2
+        System.out.println("\n===== Linked List Stack =====");
+
+        CallStack call = new CallStack();
+
+        call.push("main()");
+        call.push("login()");
+        call.push("validate()");
+
+        System.out.println("Current : " + call.peek());
+        System.out.println("Return : " + call.pop());
+        System.out.println("Current : " + call.peek());
+
+        // Scenario 3
+        System.out.println("\n===== Balanced Brackets =====");
+
+        String s = "{[()]}";
+
+        System.out.println(isValidConfig(s));
+
+        // Scenario 4
+        System.out.println("\n===== Next Greater Element =====");
+
+        int[] visitors = {4, 5, 2, 25};
+
+        printArray(nextGreaterElement(visitors));
+
+        // Scenario 5
+        System.out.println("\n===== Stock Span =====");
+
+        int[] load = {100, 80, 60, 70, 60, 75, 85};
+
+        printArray(stockSpan(load));
+    }
+}
