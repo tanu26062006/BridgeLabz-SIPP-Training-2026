@@ -1,0 +1,226 @@
+import java.util.*;
+
+
+public class QueueScenarios {
+
+    public static void main(String[] args) {
+
+        
+        // Scenario 1 : Circular Queue
+        
+        System.out.println(" Scenario 1 : Circular Queue ");
+
+        CircularQueue cq = new CircularQueue(5);
+
+        cq.enqueue(10);
+        cq.enqueue(20);
+        cq.enqueue(30);
+        cq.enqueue(40);
+        cq.enqueue(50);
+
+        System.out.println("Dequeued : " + cq.dequeue());
+        System.out.println("Dequeued : " + cq.dequeue());
+
+        cq.enqueue(60);
+        cq.enqueue(70);
+
+        while (!cq.isEmpty()) {
+            System.out.print(cq.dequeue() + " ");
+        }
+
+        System.out.println("\n");
+
+        
+        // Scenario 2 : Deque
+        
+        System.out.println("===== Scenario 2 : Deque =====");
+
+        PrintQueue pq = new PrintQueue();
+
+        pq.addNormal(101);
+        pq.addNormal(102);
+        pq.addUrgent(999);
+        pq.addNormal(103);
+
+        while (!pq.isEmpty()) {
+            System.out.println("Printing Job : " + pq.printJob());
+        }
+
+        System.out.println();
+
+        
+        // Scenario 3 : Priority Queue
+        
+        System.out.println("Scenario 3 : Hospital ER ");
+
+        Hospital hospital = new Hospital();
+
+        hospital.admit(new Patient(4, "Ram"));
+        hospital.admit(new Patient(2, "Shyam"));
+        hospital.admit(new Patient(1, "Aman"));
+        hospital.admit(new Patient(5, "Ravi"));
+
+        while (!hospital.isEmpty()) {
+            Patient p = hospital.nextPatient();
+            System.out.println(p.name + " Priority : " + p.priority);
+        }
+
+        System.out.println();
+
+        
+        // Scenario 4 : Sliding Window Maximum
+    
+        System.out.println("Scenario 4 : Sliding Window Maximum ");
+
+        int[] nums = {2,1,3,4,6,3,8,9,10,12,56};
+        int k = 4;
+
+        int[] ans = SlidingWindow.maxSlidingWindow(nums, k);
+
+        System.out.println(Arrays.toString(ans));
+    }
+}
+
+
+
+// Scenario 1 : Circular Queue
+
+class CircularQueue {
+
+    private int[] arr;
+    private int front;
+    private int count;
+
+    CircularQueue(int capacity) {
+        arr = new int[capacity];
+        front = 0;
+        count = 0;
+    }
+
+    public boolean enqueue(int value) {
+
+        if (count == arr.length) {
+            System.out.println("Queue Full");
+            return false;
+        }
+
+        int rear = (front + count) % arr.length;
+
+        arr[rear] = value;
+
+        count++;
+
+        return true;
+    }
+
+    public int dequeue() {
+
+        if (count == 0)
+            throw new RuntimeException("Queue Empty");
+
+        int value = arr[front];
+
+        front = (front + 1) % arr.length;
+
+        count--;
+
+        return value;
+    }
+
+    public boolean isEmpty() {
+        return count == 0;
+    }
+}
+
+
+
+// Scenario 2 : Deque
+
+class PrintQueue {
+
+    Deque<Integer> deque = new ArrayDeque<>();
+
+    public void addNormal(int job) {
+        deque.addLast(job);
+    }
+
+    public void addUrgent(int job) {
+        deque.addFirst(job);
+    }
+
+    public int printJob() {
+        return deque.removeFirst();
+    }
+
+    public boolean isEmpty() {
+        return deque.isEmpty();
+    }
+}
+
+
+
+// Scenario 3 : Priority Queue
+
+class Patient {
+
+    int priority;
+    String name;
+
+    Patient(int priority, String name) {
+        this.priority = priority;
+        this.name = name;
+    }
+}
+
+class Hospital {
+
+    PriorityQueue<Patient> queue =
+            new PriorityQueue<>((a, b) -> a.priority - b.priority);
+
+    public void admit(Patient p) {
+        queue.offer(p);
+    }
+
+    public Patient nextPatient() {
+        return queue.poll();
+    }
+
+    public boolean isEmpty() {
+        return queue.isEmpty();
+    }
+}
+
+
+
+// Scenario 4 : Sliding Window Maximum
+
+class SlidingWindow {
+
+    public static int[] maxSlidingWindow(int[] nums, int k) {
+
+        int n = nums.length;
+
+        int[] ans = new int[n - k + 1];
+
+        Deque<Integer> deque = new ArrayDeque<>();
+
+        for (int i = 0; i < n; i++) {
+
+            while (!deque.isEmpty() && deque.peekFirst() <= i - k) {
+                deque.pollFirst();
+            }
+
+            while (!deque.isEmpty() && nums[deque.peekLast()] <= nums[i]) {
+                deque.pollLast();
+            }
+
+            deque.offerLast(i);
+
+            if (i >= k - 1) {
+                ans[i - k + 1] = nums[deque.peekFirst()];
+            }
+        }
+
+        return ans;
+    }
+}
