@@ -1,0 +1,178 @@
+import java.util.*;
+
+public class HashingScenarios {
+
+    
+    // Scenario 1: HashSet - Duplicate Session Token Detection
+    
+    public static boolean hasDuplicateToken(String[] tokens) {
+
+        HashSet<String> seen = new HashSet<>();
+
+        for (String token : tokens) {
+
+            if (!seen.add(token))
+                return true;
+        }
+
+        return false;
+    }
+}
+    // Scenario 2: HashMap - Most Frequent Error Code
+    
+    public static int mostFrequentErrorCode(int[] codes) {
+
+        HashMap<Integer, Integer> freq = new HashMap<>();
+
+        int bestCode = codes[0];
+        int bestCount = 0;
+
+        for (int code : codes) {
+
+            int count = freq.getOrDefault(code, 0) + 1;
+            freq.put(code, count);
+
+            if (count > bestCount) {
+                bestCount = count;
+                bestCode = code;
+            }
+        }
+
+        return bestCode;
+    }
+
+    
+    // Scenario 3: Two Sum Variant - Fraud Pair Detection
+    
+    public static int[] findFraudPair(int[] amounts, int target) {
+
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        for (int i = 0; i < amounts.length; i++) {
+
+            int complement = target - amounts[i];
+
+            if (map.containsKey(complement))
+                return new int[] { map.get(complement), i };
+
+            map.put(amounts[i], i);
+        }
+
+        return new int[] { -1, -1 };
+    }
+
+    
+    // Scenario 4: Subarray Sum Equals K
+    
+    public static int subarraySumEqualsK(int[] nums, int k) {
+
+        HashMap<Integer, Integer> prefix = new HashMap<>();
+
+        prefix.put(0, 1);
+
+        int sum = 0;
+        int answer = 0;
+
+        for (int num : nums) {
+
+            sum += num;
+
+            answer += prefix.getOrDefault(sum - k, 0);
+
+            prefix.put(sum, prefix.getOrDefault(sum, 0) + 1);
+        }
+
+        return answer;
+    }
+
+
+    // Scenario 5: Group Anagrams
+    
+    public static List<List<String>> groupAnagrams(String[] strs) {
+
+        HashMap<String, List<String>> map = new HashMap<>();
+
+        for (String s : strs) {
+
+            char[] arr = s.toCharArray();
+
+            Arrays.sort(arr);
+
+            String key = new String(arr);
+
+            if (!map.containsKey(key))
+                map.put(key, new ArrayList<>());
+
+            map.get(key).add(s);
+        }
+
+        return new ArrayList<>(map.values());
+    }
+
+    
+    // Scenario 6: Longest Consecutive Sequence
+    
+    public static int longestConsecutiveRun(int[] nums) {
+
+        HashSet<Integer> set = new HashSet<>();
+
+        for (int num : nums)
+            set.add(num);
+
+        int longest = 0;
+
+        for (int num : set) {
+
+            if (!set.contains(num - 1)) {
+
+                int current = num;
+                int length = 1;
+
+                while (set.contains(current + 1)) {
+                    current++;
+                    length++;
+                }
+
+                longest = Math.max(longest, length);
+            }
+        }
+
+        return longest;
+    }
+
+    
+    // Main Method
+    
+    public static void main(String[] args) {
+
+        // Scenario 1
+        String[] tokens = { "abc", "xyz", "abc", "pqr" };
+        System.out.println("Duplicate Token : " + hasDuplicateToken(tokens));
+
+        // Scenario 2
+        int[] errors = { 404, 500, 404, 200, 404, 500 };
+        System.out.println("Most Frequent Error : " + mostFrequentErrorCode(errors));
+
+        // Scenario 3
+        int[] amounts = { 2, 7, 11, 15 };
+        int[] pair = findFraudPair(amounts, 9);
+        System.out.println("Fraud Pair Indices : " + pair[0] + " " + pair[1]);
+
+        // Scenario 4
+        int[] revenue = { 1, 2, 3, -2, 2 };
+        System.out.println("Subarrays Sum = 3 : " + subarraySumEqualsK(revenue, 3));
+
+        // Scenario 5
+        String[] words = { "eat", "tea", "tan", "ate", "nat", "bat" };
+
+        List<List<String>> groups = groupAnagrams(words);
+
+        System.out.println("Grouped Anagrams :");
+        for (List<String> list : groups)
+            System.out.println(list);
+
+        // Scenario 6
+        int[] ids = { 100, 4, 200, 1, 3, 2 };
+        System.out.println("Longest Consecutive Run : " + longestConsecutiveRun(ids));
+    }
+}
