@@ -1,0 +1,46 @@
+import java.util.*;
+
+class Patient {
+
+    String name;
+    int severity;
+
+    Patient(String name, int severity) {
+        this.name = name;
+        this.severity = severity;
+    }
+}
+
+public class Main {
+
+    static PriorityQueue<Patient> pq =
+            new PriorityQueue<>(
+                    (a, b) -> b.severity - a.severity);
+
+    static void addPatient(Patient p) {
+        pq.offer(p);
+    }
+
+    static Patient treatNext() {
+        return pq.poll();
+    }
+
+    public static void main(String[] args) {
+
+        addPatient(new Patient("Aman", 30));
+        addPatient(new Patient("Riya", 90));
+        addPatient(new Patient("Karan", 50));
+        addPatient(new Patient("Neha", 80));
+
+        while (!pq.isEmpty()) {
+
+            Patient p = treatNext();
+
+            System.out.println(
+                    p.name + " " + p.severity
+            );
+
+        }
+
+    }
+}
