@@ -1,0 +1,330 @@
+import java.util.*;
+
+public class GraphScenarios {
+
+    static Map<Integer, Set<Integer>> friendGraph = new HashMap<>();
+
+    static void addFriendship(int u, int v) {
+        friendGraph.computeIfAbsent(u, k -> new HashSet<>()).add(v);
+        friendGraph.computeIfAbsent(v, k -> new HashSet<>()).add(u);
+    }
+
+    static boolean isFriend(int u, int v) {
+        return friendGraph.getOrDefault(u, Collections.emptySet()).contains(v);
+    }
+
+    
+    // Scenario 2: BFS Shortest Path
+    
+
+    static List<Integer> fewestFlights(Map<Integer, List<Integer>> routes,
+                                       int origin,
+                                       int destination) {
+
+        Queue<Integer> queue = new LinkedList<>();
+        Set<Integer> visited = new HashSet<>();
+        Map<Integer, Integer> parent = new HashMap<>();
+
+        queue.offer(origin);
+        visited.add(origin);
+        parent.put(origin, null);
+
+        while (!queue.isEmpty()) {
+
+            int city = queue.poll();
+
+            if (city == destination)
+                break;
+
+            for (int next : routes.getOrDefault(city, Collections.emptyList())) {
+
+                if (!visited.contains(next)) {
+                    visited.add(next);
+                    parent.put(next, city);
+                    queue.offer(next);
+                }
+            }
+        }
+
+        if (!visited.contains(destination))
+            return Collections.emptyList();
+
+        LinkedList<Integer> path = new LinkedList<>();
+
+        Integer node = destination;
+
+        while (node != null) {
+            path.addFirst(node);
+            node = parent.get(node);
+        }
+
+        return path;
+    }
+
+    
+    // Scenario 3: DFS All Paths
+    
+
+    static void allRoutes(Map<Integer, List<Integer>> roads,
+                          int current,
+                          int target,
+                          List<Integer> path,
+                          Set<Integer> visited,
+                          List<List<Integer>> allRoutes) {
+
+        path.add(current);
+        visited.add(current);
+
+        if (current == target) {
+            allRoutes.add(new ArrayList<>(path));
+        } else {
+
+            for (int next : roads.getOrDefault(current, Collections.emptyList())) {
+
+                if (!visited.contains(next)) {
+                    allRoutes(roads, next, target, path, visited, allRoutes);
+                }
+            }
+        }
+
+        path.remove(path.size() - 1);
+        visited.remove(current);
+    }
+
+    
+    // Scenario 4: Connected Components
+    
+
+    static int countNetworkSegments(Map<Integer, List<Integer>> network, int n) {
+
+        Set<Integer> visited = new HashSet<>();
+
+        int segments = 0;
+
+        for (int server = 0; server < n; server++) {
+
+            if (!visited.contains(server)) {
+                segments++;
+                dfsMark(network, server, visited);
+            }
+        }
+
+        return segments;
+    }
+
+    static void dfsMark(Map<Integer, List<Integer>> network,
+                        int node,
+                        Set<Integer> visited) {
+
+        visited.add(node);
+
+        for (int neighbor : network.getOrDefault(node, Collections.emptyList())) {
+
+            if (!visited.contains(neighbor)) {
+                dfsMark(network, neighbor, visited);
+            }
+        }
+    }
+
+    
+    // Scenario 5: Undirected Cycle Detection
+    
+
+    static boolean hasWiringLoop(Map<Integer, List<Integer>> graph, int n) {
+
+        Set<Integer> visited = new HashSet<>();
+
+        for (int i = 0; i < n; i++) {
+
+            if (!visited.contains(i)) {
+
+                if (dfsCycleUndirected(graph, i, -1, visited))
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
+    static boolean dfsCycleUndirected(Map<Integer, List<Integer>> graph,
+                                      int node,
+                                      int parent,
+                                      Set<Integer> visited) {
+
+        visited.add(node);
+
+        for (int neighbor : graph.getOrDefault(node, Collections.emptyList())) {
+
+            if (!visited.contains(neighbor)) {
+
+                if (dfsCycleUndirected(graph, neighbor, node, visited))
+                    return true;
+
+            } else if (neighbor != parent) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    
+    // Scenario 6: Directed Cycle Detection
+    
+
+    static boolean hasCircularDependency(Map<Integer, List<Integer>> graph, int n) {
+
+        int[] state = new int[n];
+        // 0 = WHITE
+        // 1 = GRAY
+        // 2 = BLACK
+
+        for (int i = 0; i < n; i++) {
+
+            if (state[i] == 0) {
+
+                if (dfsCycleDirected(graph, i, state))
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
+    static boolean dfsCycleDirected(Map<Integer, List<Integer>> graph,
+                                    int node,
+                                    int[] state) {
+
+        state[node] = 1;
+
+        for (int neighbor : graph.getOrDefault(node, Collections.emptyList())) {
+
+            if (state[neighbor] == 1)
+                return true;
+
+            if (state[neighbor] == 0 &&
+                    dfsCycleDirected(graph, neighbor, state))
+                return true;
+        }
+
+        state[node] = 2;
+
+        return false;
+    }
+
+    
+    // Helper Method
+    
+
+    static void addEdge(Map<Integer, List<Integer>> graph,
+                        int u,
+                        int v,
+                        boolean directed) {
+
+        graph.computeIfAbsent(u, k -> new ArrayList<>()).add(v);
+
+        if (!directed) {
+            graph.computeIfAbsent(v, k -> new ArrayList<>()).add(u);
+        }
+    }
+
+    
+    // Main Method
+    
+
+    public static void main(String[] args) {
+
+        
+        // Scenario 1
+        
+
+        addFriendship(1, 2);
+        addFriendship(1, 3);
+        addFriendship(2, 4);
+
+        System.out.println(" Scenario 1 ");
+        System.out.println("1 and 3 friends? " + isFriend(1, 3));
+        System.out.println("3 and 4 friends? " + isFriend(3, 4));
+
+        
+        // Scenario 2
+        
+
+        Map<Integer, List<Integer>> flights = new HashMap<>();
+
+        addEdge(flights, 0, 1, false);
+        addEdge(flights, 0, 2, false);
+        addEdge(flights, 1, 3, false);
+        addEdge(flights, 2, 3, false);
+
+        System.out.println("\n Scenario 2 ");
+        System.out.println("Shortest Path: " + fewestFlights(flights, 0, 3));
+
+        
+        // Scenario 3
+        
+
+        List<List<Integer>> routes = new ArrayList<>();
+
+        allRoutes(
+                flights,
+                0,
+                3,
+                new ArrayList<>(),
+                new HashSet<>(),
+                routes
+        );
+
+        System.out.println("\n Scenario 3 ");
+
+        for (List<Integer> path : routes) {
+            System.out.println(path);
+        }
+
+        
+        // Scenario 4
+        
+
+        Map<Integer, List<Integer>> network = new HashMap<>();
+
+        addEdge(network, 0, 1, false);
+        addEdge(network, 2, 3, false);
+
+        System.out.println("\n===== Scenario 4 =====");
+
+        int segments = countNetworkSegments(network, 5);
+
+        System.out.println("Connected Components = " + segments);
+
+        if (segments == 1)
+            System.out.println("Network Fully Connected");
+        else
+            System.out.println("Network NOT Fully Connected");
+
+        
+        // Scenario 5
+        
+
+        Map<Integer, List<Integer>> undirected = new HashMap<>();
+
+        addEdge(undirected, 0, 1, false);
+        addEdge(undirected, 1, 2, false);
+        addEdge(undirected, 2, 0, false);
+
+        System.out.println("\n Scenario 5 ");
+        System.out.println("Cycle Present? " + hasWiringLoop(undirected, 3));
+
+        
+        // Scenario 6
+        
+
+        Map<Integer, List<Integer>> directed = new HashMap<>();
+
+        addEdge(directed, 0, 1, true);
+        addEdge(directed, 1, 2, true);
+        addEdge(directed, 2, 0, true);
+
+        System.out.println("\n Scenario 6 ");
+        System.out.println("Directed Cycle? " + hasCircularDependency(directed, 3));
+    }
+}
