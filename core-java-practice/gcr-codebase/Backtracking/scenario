@@ -1,0 +1,291 @@
+import java.util.*;
+
+public class BacktrackingScenarios {
+
+    
+    // Scenario 1: Subsets 
+
+
+    public List<List<String>> generateFlagCombinations(String[] flags) {
+        List<List<String>> result = new ArrayList<>();
+        subsetHelper(flags, 0, new ArrayList<>(), result);
+        return result;
+    }
+
+    private void subsetHelper(String[] flags, int index,
+                              List<String> current,
+                              List<List<String>> result) {
+
+        if (index == flags.length) {
+            result.add(new ArrayList<>(current));
+            return;
+        }
+
+        // Include current flag
+        current.add(flags[index]);
+        subsetHelper(flags, index + 1, current, result);
+
+        // Backtrack
+        current.remove(current.size() - 1);
+
+        // Exclude current flag
+        subsetHelper(flags, index + 1, current, result);
+    }
+
+    
+    // Scenario 2: Combination Sum 
+    
+
+    public List<List<Integer>> makeChange(int[] coins, int target) {
+        Arrays.sort(coins);
+
+        List<List<Integer>> result = new ArrayList<>();
+
+        combinationHelper(coins, target, 0, 0,
+                new ArrayList<>(), result);
+
+        return result;
+    }
+
+    private void combinationHelper(int[] coins,
+                                   int target,
+                                   int start,
+                                   int sum,
+                                   List<Integer> path,
+                                   List<List<Integer>> result) {
+
+        if (sum == target) {
+            result.add(new ArrayList<>(path));
+            return;
+        }
+
+        for (int i = start; i < coins.length; i++) {
+
+            if (sum + coins[i] > target)
+                break;
+
+            path.add(coins[i]);
+
+            // Same index because coin can be reused
+            combinationHelper(coins, target, i,
+                    sum + coins[i], path, result);
+
+            path.remove(path.size() - 1);
+        }
+    }
+
+    
+    // Scenario 3: Permutations 
+
+    public List<List<String>> generateSchedules(String[] engineers) {
+
+        List<List<String>> result = new ArrayList<>();
+
+        boolean[] used = new boolean[engineers.length];
+
+        permutationHelper(engineers, used,
+                new ArrayList<>(), result);
+
+        return result;
+    }
+
+    private void permutationHelper(String[] engineers,
+                                   boolean[] used,
+                                   List<String> path,
+                                   List<List<String>> result) {
+
+        if (path.size() == engineers.length) {
+            result.add(new ArrayList<>(path));
+            return;
+        }
+
+        for (int i = 0; i < engineers.length; i++) {
+
+            if (used[i])
+                continue;
+
+            used[i] = true;
+            path.add(engineers[i]);
+
+            permutationHelper(engineers, used,
+                    path, result);
+
+            path.remove(path.size() - 1);
+            used[i] = false;
+        }
+    }
+
+    
+    // Scenario 4: N Queens 
+    
+
+    public List<List<String>> placeSensors(int n) {
+
+        List<List<String>> result = new ArrayList<>();
+
+        int[] sensorCol = new int[n];
+
+        nQueenHelper(n, 0, sensorCol, result);
+
+        return result;
+    }
+
+    private void nQueenHelper(int n,
+                              int row,
+                              int[] sensorCol,
+                              List<List<String>> result) {
+
+        if (row == n) {
+            result.add(buildBoard(n, sensorCol));
+            return;
+        }
+
+        for (int col = 0; col < n; col++) {
+
+            if (isSafe(row, col, sensorCol)) {
+
+                sensorCol[row] = col;
+
+                nQueenHelper(n,
+                        row + 1,
+                        sensorCol,
+                        result);
+            }
+        }
+    }
+
+    private boolean isSafe(int row,
+                           int col,
+                           int[] sensorCol) {
+
+        for (int r = 0; r < row; r++) {
+
+            if (sensorCol[r] == col)
+                return false;
+
+            if (Math.abs(sensorCol[r] - col)
+                    == Math.abs(r - row))
+                return false;
+        }
+
+        return true;
+    }
+
+    private List<String> buildBoard(int n,
+                                    int[] sensorCol) {
+
+        List<String> board = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+
+            char[] row = new char[n];
+
+            Arrays.fill(row, '.');
+
+            row[sensorCol[i]] = 'Q';
+
+            board.add(new String(row));
+        }
+
+        return board;
+    }
+
+    
+    // Scenario 5: Word Search 
+
+
+    public boolean exists(char[][] grid,
+                          String word) {
+
+        int rows = grid.length;
+        int cols = grid[0].length;
+
+        boolean[][] visited = new boolean[rows][cols];
+
+        for (int r = 0; r < rows; r++) {
+
+            for (int c = 0; c < cols; c++) {
+
+                if (wordHelper(grid,
+                        word,
+                        0,
+                        r,
+                        c,
+                        visited))
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean wordHelper(char[][] grid,
+                               String word,
+                               int index,
+                               int r,
+                               int c,
+                               boolean[][] visited) {
+
+        if (index == word.length())
+            return true;
+
+        if (r < 0 || c < 0
+                || r >= grid.length
+                || c >= grid[0].length)
+            return false;
+
+        if (visited[r][c])
+            return false;
+
+        if (grid[r][c] != word.charAt(index))
+            return false;
+
+        visited[r][c] = true;
+
+        boolean found =
+                wordHelper(grid, word, index + 1, r + 1, c, visited) ||
+                wordHelper(grid, word, index + 1, r - 1, c, visited) ||
+                wordHelper(grid, word, index + 1, r, c + 1, visited) ||
+                wordHelper(grid, word, index + 1, r, c - 1, visited);
+
+        visited[r][c] = false;
+
+        return found;
+    }
+
+    
+
+    public static void main(String[] args) {
+
+        BacktrackingScenarios obj = new BacktrackingScenarios();
+
+        // Scenario 1
+        String[] flags = {"DarkMode", "Checkout", "Search"};
+        System.out.println("Subsets:");
+        System.out.println(obj.generateFlagCombinations(flags));
+
+        // Scenario 2
+        int[] coins = {1, 2, 5};
+        System.out.println("\nCombination Sum:");
+        System.out.println(obj.makeChange(coins, 5));
+
+        // Scenario 3
+        String[] engineers = {"A", "B", "C"};
+        System.out.println("\nPermutations:");
+        System.out.println(obj.generateSchedules(engineers));
+
+        // Scenario 4
+        System.out.println("\nN Queens:");
+        System.out.println(obj.placeSensors(4));
+
+        // Scenario 5
+        char[][] grid = {
+                {'A', 'B', 'C', 'E'},
+                {'S', 'F', 'C', 'S'},
+                {'A', 'D', 'E', 'E'}
+        };
+
+        System.out.println("\nWord Search:");
+        System.out.println(obj.exists(grid, "ABCCED"));
+    }
+}
