@@ -1,0 +1,109 @@
+// Superclass
+class Vehicle {
+
+    String vehicleName;
+
+    Vehicle(String vehicleName) {
+        this.vehicleName = vehicleName;
+    }
+
+    // Method to be overridden
+    public double fuelCost(double km) {
+        return 0;
+    }
+}
+
+// Car Class
+class Car extends Vehicle {
+
+    Car(String vehicleName) {
+        super(vehicleName);
+    }
+
+    @Override
+    public double fuelCost(double km) {
+        return km * 8;   // Rs.8 per km
+    }
+}
+
+// Bus Class
+class Bus extends Vehicle {
+
+    Bus(String vehicleName) {
+        super(vehicleName);
+    }
+
+    @Override
+    public double fuelCost(double km) {
+        return km * 15;  // Rs.15 per km
+    }
+}
+
+// Bike Class
+class Bike extends Vehicle {
+
+    Bike(String vehicleName) {
+        super(vehicleName);
+    }
+
+    @Override
+    public double fuelCost(double km) {
+        return km * 3;   // Rs.3 per km
+    }
+}
+
+// New Class (Added without changing existing classes)
+class ElectricCar extends Vehicle {
+
+    ElectricCar(String vehicleName) {
+        super(vehicleName);
+    }
+
+    @Override
+    public double fuelCost(double km) {
+        return km * 2;   // Electricity cost
+    }
+}
+
+// Main Class
+public class TransportCompany {
+
+    public static void main(String[] args) {
+
+        Vehicle[] fleet = {
+                new Car("Hyundai"),
+                new Bus("Volvo"),
+                new Bike("Honda"),
+                new ElectricCar("Tesla")
+        };
+
+        double km = 100;
+
+        for (Vehicle v : fleet) {
+
+            System.out.println("-------------------------");
+
+            if (v instanceof Car) {
+                Car c = (Car) v;
+                System.out.println("Car : " + c.vehicleName);
+            }
+
+            else if (v instanceof Bus) {
+                Bus b = (Bus) v;
+                System.out.println("Bus : " + b.vehicleName);
+            }
+
+            else if (v instanceof Bike) {
+                Bike b = (Bike) v;
+                System.out.println("Bike : " + b.vehicleName);
+            }
+
+            else if (v instanceof ElectricCar) {
+                ElectricCar e = (ElectricCar) v;
+                System.out.println("Electric Car : " + e.vehicleName);
+            }
+
+            System.out.println("Fuel Cost for " + km + " km = Rs." + v.fuelCost(km));
+        }
+    }
+}

@@ -5,7 +5,8 @@
  * Concepts: Class, Object, Constructor, this keyword,
  *           static vs instance fields, access modifiers
  *
- * This class represents a bank account with basic banking operations.
+ * This class represents a bank account wi
+ * th basic banking operations.
  * It demonstrates:
  *   - Private instance fields (encapsulation)
  *   - Static fields shared across all objects
